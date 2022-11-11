@@ -33,7 +33,9 @@
                             {{ __(group) }}
                         </button>
                         <div
-                            v-for="(permission, option) in permissions"
+                            v-for="(permission, option) in onlyResource(
+                                permissions
+                            )"
                             :key="permission.option"
                             class="flex items-center mb-2"
                         >
@@ -113,11 +115,11 @@
                                 <div class="flex items-center flex-wrap">
                                     <div class="flex items-center mr-4">
                                         <input
-                                            id="red-radio"
+                                            :id="`field.${group}.${option}.d`"
                                             type="radio"
                                             :checked="
                                                 !isChecked(
-                                                    `${group}.${option}.w`
+                                                    `${group}.${option}.d`
                                                 )
                                             "
                                             value=""
@@ -131,14 +133,20 @@
                                             class="red-i w-4 h-4 text-red-600 cursor-pointer bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                                         />
                                         <label
-                                            for="red-radio"
+                                            @click="
+                                                toggleOption(
+                                                    `${group}.${option}.d`,
+                                                    true
+                                                )
+                                            "
+                                            :for="`field.${group}.${option}.d`"
                                             class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
                                             >x</label
                                         >
                                     </div>
                                     <div class="flex items-center mr-4">
                                         <input
-                                            id="green-radio"
+                                            :id="`field.${group}.${option}.r`"
                                             type="radio"
                                             :checked="
                                                 isChecked(
@@ -156,14 +164,20 @@
                                             class="yellow-i w-4 h-4 cursor-pointer text-yellow-600 bg-yellow-100 border-yellow-300"
                                         />
                                         <label
-                                            for="green-radio"
+                                            @click="
+                                                toggleOption(
+                                                    `${group}.${option}.r`,
+                                                    true
+                                                )
+                                            "
+                                            :for="`field.${group}.${option}.r`"
                                             class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
                                             >R</label
                                         >
                                     </div>
                                     <div class="flex items-center mr-4">
                                         <input
-                                            id="purple-radio"
+                                            :id="`field.${group}.${option}.w`"
                                             type="radio"
                                             :checked="
                                                 isChecked(
@@ -181,7 +195,13 @@
                                             class="green-i w-4 h-4 cursor-pointer text-purple-600 bg-gray-100 border-gray-300 dark:focus:ring-purple-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                                         />
                                         <label
-                                            for="purple-radio"
+                                            @click="
+                                                toggleOption(
+                                                    `${group}.${option}.w`,
+                                                    true
+                                                )
+                                            "
+                                            :id="`field.${group}.${option}.w`"
                                             class="ml-2 text-sm cursor-pointer font-medium text-gray-900 dark:text-gray-300"
                                             >W</label
                                         >
@@ -292,6 +312,12 @@ export default {
                 this.value = this.value.filter((item) => item != option);
             }
         },
+        onlyResource(permissions) {
+            const filterPerms = permissions.filter(
+                (item) => item.is_field == false
+            );
+            return filterPerms;
+        },
         toggleOption(option, field = false) {
             if (field) {
                 this.value = this.value.filter(
@@ -324,7 +350,6 @@ export default {
          * Fill the given FormData object with the field's internal value.
          */
         fill(formData) {
-            console.log(this.value);
             formData.append(this.field.attribute, this.value || []);
         },
         /**
