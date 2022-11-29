@@ -24,187 +24,189 @@
                     :key="group"
                     class="mb-4"
                 >
-                    <div class="flex items-center justify-between">
-                        <button
-                            type="button"
-                            @click="toggle(group)"
-                            class="mb-1 pr-2 font-bold text-base"
-                        >
-                            {{ __(group) }}
-                        </button>
-                        <div
-                            v-for="(permission, option) in onlyResource(
-                                permissions
-                            )"
-                            :key="permission.option"
-                            class="flex items-center mb-2"
-                        >
-                            <checkbox
-                                v-if="!permission.is_field"
-                                :value="permission.option"
-                                :checked="isChecked(permission.option)"
-                                @input="toggleOption(permission.option)"
-                                class="pr-2 mr-2"
-                            />
-                            <label
-                                v-if="!permission.is_field"
-                                :for="field.name"
-                                v-text="permission.label"
-                                @click="toggleOption(permission.option)"
-                                class="w-full"
-                            ></label>
-                        </div>
-                        <button
-                            v-if="fields_toggle !== group"
-                            @click="fields_toggle = group"
-                            class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900"
-                            type="button"
-                        >
-                            +
-                        </button>
-                        <button
-                            v-if="fields_toggle == group"
-                            @click="fields_toggle = null"
-                            class="shadow relative bg-red-500 hover:bg-red-400 text-white cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-red-500 hover:bg-red-400 text-white"
-                            type="button"
-                        >
-                            -
-                        </button>
-                    </div>
-                    <div
-                        class="flex flex-col items-center"
-                        v-show="fields_toggle == group"
-                    >
-                        <div
-                            class="flex items-center justify-between space-x-2"
-                        >
+                    <div class="px-1 py-3 border-2 rounded">
+                        <div class="flex items-center justify-between">
                             <button
-                                class="shadow relative bg-red-500 hover:bg-red-400 text-white cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-red-500 hover:bg-red-400 text-white"
-                                @click="selectAllField(permissions, 'd')"
                                 type="button"
+                                @click="toggle(group)"
+                                class="mb-1 pr-2 font-bold text-base"
                             >
-                                Invisable
+                                {{ __(group) }}
                             </button>
-                            <button
-                                class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900"
-                                @click="selectAllField(permissions, 'w')"
-                                type="button"
-                            >
-                                Write All
-                            </button>
-                            <button
-                                class="shadow relative bg-yellow-500 hover:bg-yellow-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-yellow-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-yellow-500 hover:bg-yellow-400 text-white dark:text-gray-900"
-                                @click="selectAllField(permissions, 'r')"
-                                type="button"
-                            >
-                                Read only
-                            </button>
-                        </div>
-                        <div class="flex flex-wrap items-center">
                             <div
-                                v-for="(_permission, option) in groupBy(
+                                v-for="(permission, option) in onlyResource(
                                     permissions
                                 )"
-                                class="flex flex-col items-center p-2 mx-2 mt-3 border border-gray-200"
+                                :key="permission.option"
+                                class="flex items-center mb-2"
                             >
-                                <p
-                                    class="inline-block pt-2 text-lg leading-tight"
+                                <checkbox
+                                    v-if="!permission.is_field"
+                                    :value="permission.option"
+                                    :checked="isChecked(permission.option)"
+                                    @input="toggleOption(permission.option)"
+                                    class="pr-2 mr-2"
+                                />
+                                <label
+                                    v-if="!permission.is_field"
+                                    :for="field.name"
+                                    v-text="permission.label"
+                                    @click="toggleOption(permission.option)"
+                                    class="w-full"
+                                ></label>
+                            </div>
+                            <button
+                                v-if="fields_toggle !== group"
+                                @click="fields_toggle = group"
+                                class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900"
+                                type="button"
+                            >
+                                +
+                            </button>
+                            <button
+                                v-if="fields_toggle == group"
+                                @click="fields_toggle = null"
+                                class="shadow relative bg-red-500 hover:bg-red-400 text-white cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-red-500 hover:bg-red-400 text-white"
+                                type="button"
+                            >
+                                -
+                            </button>
+                        </div>
+                        <div
+                            class="flex flex-col items-center"
+                            v-show="fields_toggle == group"
+                        >
+                            <div
+                                class="flex items-center justify-between space-x-2"
+                            >
+                                <button
+                                    class="shadow relative bg-red-500 hover:bg-red-400 text-white cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-red-500 hover:bg-red-400 text-white"
+                                    @click="selectAllField(permissions, 'd')"
+                                    type="button"
                                 >
-                                    {{ option }}
-                                </p>
-                                <div class="flex items-center flex-wrap">
-                                    <div class="flex items-center mr-4">
-                                        <input
-                                            :id="`field.${group}.${option}.d`"
-                                            type="radio"
-                                            :checked="
-                                                !isChecked(
-                                                    `${group}.${option}.d`
-                                                )
-                                            "
-                                            value=""
-                                            @input="
-                                                toggleOption(
-                                                    `${group}.${option}.d`,
-                                                    true
-                                                )
-                                            "
-                                            :name="`field.${group}.${option}`"
-                                            class="red-i w-4 h-4 text-red-600 cursor-pointer bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                                        />
-                                        <label
-                                            @click="
-                                                toggleOption(
-                                                    `${group}.${option}.d`,
-                                                    true
-                                                )
-                                            "
-                                            :for="`field.${group}.${option}.d`"
-                                            class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
-                                            >x</label
-                                        >
-                                    </div>
-                                    <div class="flex items-center mr-4">
-                                        <input
-                                            :id="`field.${group}.${option}.r`"
-                                            type="radio"
-                                            :checked="
-                                                isChecked(
-                                                    `${group}.${option}.r`
-                                                )
-                                            "
-                                            :value="`${group}.${option}.r`"
-                                            @input="
-                                                toggleOption(
-                                                    `${group}.${option}.r`,
-                                                    true
-                                                )
-                                            "
-                                            :name="`field.${group}.${option}`"
-                                            class="yellow-i w-4 h-4 cursor-pointer text-yellow-600 bg-yellow-100 border-yellow-300"
-                                        />
-                                        <label
-                                            @click="
-                                                toggleOption(
-                                                    `${group}.${option}.r`,
-                                                    true
-                                                )
-                                            "
-                                            :for="`field.${group}.${option}.r`"
-                                            class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
-                                            >R</label
-                                        >
-                                    </div>
-                                    <div class="flex items-center mr-4">
-                                        <input
-                                            :id="`field.${group}.${option}.w`"
-                                            type="radio"
-                                            :checked="
-                                                isChecked(
-                                                    `${group}.${option}.w`
-                                                )
-                                            "
-                                            @input="
-                                                toggleOption(
-                                                    `${group}.${option}.w`,
-                                                    true
-                                                )
-                                            "
-                                            :value="`${group}.${option}.w`"
-                                            :name="`field.${group}.${option}`"
-                                            class="green-i w-4 h-4 cursor-pointer text-purple-600 bg-gray-100 border-gray-300 dark:focus:ring-purple-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                                        />
-                                        <label
-                                            @click="
-                                                toggleOption(
-                                                    `${group}.${option}.w`,
-                                                    true
-                                                )
-                                            "
-                                            :id="`field.${group}.${option}.w`"
-                                            class="ml-2 text-sm cursor-pointer font-medium text-gray-900 dark:text-gray-300"
-                                            >W</label
-                                        >
+                                    Invisable
+                                </button>
+                                <button
+                                    class="shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900"
+                                    @click="selectAllField(permissions, 'w')"
+                                    type="button"
+                                >
+                                    Write All
+                                </button>
+                                <button
+                                    class="shadow relative bg-yellow-500 hover:bg-yellow-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-yellow-200 dark:ring-gray-600 inline-flex items-center justify-center h-6 px-2 shadow relative bg-yellow-500 hover:bg-yellow-400 text-white dark:text-gray-900"
+                                    @click="selectAllField(permissions, 'r')"
+                                    type="button"
+                                >
+                                    Read only
+                                </button>
+                            </div>
+                            <div class="flex flex-wrap items-center">
+                                <div
+                                    v-for="(_permission, option) in groupBy(
+                                        permissions
+                                    )"
+                                    class="flex flex-col items-center p-2 mx-2 mt-3 border rounded border-gray-200"
+                                >
+                                    <p
+                                        class="inline-block pt-2 text-lg leading-tight"
+                                    >
+                                        {{ option }}
+                                    </p>
+                                    <div class="flex items-center flex-wrap">
+                                        <div class="flex items-center mr-4">
+                                            <input
+                                                :id="`field.${group}.${option}.d`"
+                                                type="radio"
+                                                :checked="
+                                                    !isChecked(
+                                                        `${group}.${option}.d`
+                                                    )
+                                                "
+                                                value=""
+                                                @input="
+                                                    toggleOption(
+                                                        `${group}.${option}.d`,
+                                                        true
+                                                    )
+                                                "
+                                                :name="`field.${group}.${option}`"
+                                                class="red-i w-4 h-4 text-red-600 cursor-pointer bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                                            />
+                                            <label
+                                                @click="
+                                                    toggleOption(
+                                                        `${group}.${option}.d`,
+                                                        true
+                                                    )
+                                                "
+                                                :for="`field.${group}.${option}.d`"
+                                                class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
+                                                >x</label
+                                            >
+                                        </div>
+                                        <div class="flex items-center mr-4">
+                                            <input
+                                                :id="`field.${group}.${option}.r`"
+                                                type="radio"
+                                                :checked="
+                                                    isChecked(
+                                                        `${group}.${option}.r`
+                                                    )
+                                                "
+                                                :value="`${group}.${option}.r`"
+                                                @input="
+                                                    toggleOption(
+                                                        `${group}.${option}.r`,
+                                                        true
+                                                    )
+                                                "
+                                                :name="`field.${group}.${option}`"
+                                                class="yellow-i w-4 h-4 cursor-pointer text-yellow-600 bg-yellow-100 border-yellow-300"
+                                            />
+                                            <label
+                                                @click="
+                                                    toggleOption(
+                                                        `${group}.${option}.r`,
+                                                        true
+                                                    )
+                                                "
+                                                :for="`field.${group}.${option}.r`"
+                                                class="ml-2 text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
+                                                >R</label
+                                            >
+                                        </div>
+                                        <div class="flex items-center mr-4">
+                                            <input
+                                                :id="`field.${group}.${option}.w`"
+                                                type="radio"
+                                                :checked="
+                                                    isChecked(
+                                                        `${group}.${option}.w`
+                                                    )
+                                                "
+                                                @input="
+                                                    toggleOption(
+                                                        `${group}.${option}.w`,
+                                                        true
+                                                    )
+                                                "
+                                                :value="`${group}.${option}.w`"
+                                                :name="`field.${group}.${option}`"
+                                                class="green-i w-4 h-4 cursor-pointer text-purple-600 bg-gray-100 border-gray-300 dark:focus:ring-purple-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                                            />
+                                            <label
+                                                @click="
+                                                    toggleOption(
+                                                        `${group}.${option}.w`,
+                                                        true
+                                                    )
+                                                "
+                                                :id="`field.${group}.${option}.w`"
+                                                class="ml-2 text-sm cursor-pointer font-medium text-gray-900 dark:text-gray-300"
+                                                >W</label
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
